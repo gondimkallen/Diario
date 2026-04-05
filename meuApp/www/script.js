@@ -72,12 +72,7 @@ function showPinError() {
 }
 
 function unlock() {
-  document.getElementById('lockScreen').classList.add('hidden');
-  document.getElementById('appContainer').classList.add('visible');
-  renderNotes();
-  setTimeout(() => {
-    document.getElementById('lockScreen').style.display = 'none';
-  }, 500);
+  window.location.href = "home.html";
 }
 
 function openPasswordSetup() {

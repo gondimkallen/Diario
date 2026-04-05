@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Meu Diário">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#FFF8F3">
+  <meta name="application-name" content="Meu Diário">
+  <meta name="msapplication-TileColor" content="#E8735A">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css"/>
+  <title>Meu Diário</title>
+</head>
+<body>
+
+  <!-- ==================== PASSWORD SETUP ==================== -->
+  <div class="pw-setup-overlay" id="pwSetupOverlay">
+    <div class="pw-setup-card">
+      <h3>Configurar Senha</h3>
+      <p>Escolha um PIN de 4 dígitos para proteger seu diário</p>
+      <div class="pw-input-wrapper">
+        <label for="newPw">Novo PIN</label>
+        <input type="password" id="newPw" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="****">
+      </div>
+      <div class="pw-input-wrapper">
+        <label for="confirmPw">Confirmar PIN</label>
+        <input type="password" id="confirmPw" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="****">
+      </div>
+      <div class="lock-error" id="pwSetupError"></div>
+      <button class="pw-setup-btn" onclick="saveNewPassword()">Salvar Senha</button>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN APP ==================== -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+  <div class="app-container" id="appContainer">
+    <!-- Top Header Bar -->
+    <header class="top-header">
+      <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Abrir menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="top-header-title"><span>&#x1F338;</span> Meu Diário</div>
+    </header>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2><span>&#x1F338;</span> Meu Diário</h2>
+      </div>
+      <div class="sidebar-nav">
+        <button class="nav-item active" data-view="all" onclick="switchView('all')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Todas as Notas
+          <span class="badge" id="totalBadge">0</span>
+        </button>
+        <button class="nav-item" data-view="favorites" onclick="switchView('favorites')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Favoritas
+        </button>
+        <button class="nav-item" data-view="pinned" onclick="switchView('pinned')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V5a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2z"/></svg>
+          Fixadas
+        </button>
+        <button class="nav-item" data-view="mood" onclick="switchView('mood')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          Humor
+        </button>
+      </div>
+      <div class="sidebar-footer">
+        <button class="btn-new-entry" onclick="openEditor()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nova Nota
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="main-header">
+        <h1 id="viewTitle">Todas as Notas</h1>
+        <div class="header-actions">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Buscar notas..." id="searchInput" oninput="renderNotes()">
+          </div>
+          <button class="btn-icon" onclick="openEditor()" title="Nova nota" aria-label="Nova nota">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Notes View -->
+      <div id="notesView">
+        <div class="notes-grid" id="notesGrid"></div>
+        <div class="empty-state" id="emptyState" style="display: none;">
+          <div class="empty-state-icon">&#x1F4DD;</div>
+          <h3>Nenhuma nota encontrada</h3>
+          <p>Comece a escrever sobre o seu dia clicando em "Nova Nota"</p>
+        </div>
+      </div>
+
+      <!-- Mood Chart View -->
+      <div id="moodView" style="display: none;">
+        <div class="mood-chart-container">
+          <div class="mood-chart-header">
+            <h3>Gráfico de Humor</h3>
+            <div class="mood-legend">
+              <div class="mood-legend-item"><div class="mood-legend-dot" style="background: var(--mood-great);"></div> Ótimo</div>
+              <div class="mood-legend-item"><div class="mood-legend-dot" style="background: var(--mood-good);"></div> Bom</div>
+              <div class="mood-legend-item"><div class="mood-legend-dot" style="background: var(--mood-neutral);"></div> Normal</div>
+              <div class="mood-legend-item"><div class="mood-legend-dot" style="background: var(--mood-bad);"></div> Ruim</div>
+              <div class="mood-legend-item"><div class="mood-legend-dot" style="background: var(--mood-awful);"></div> Péssimo</div>
+            </div>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="moodChart"></canvas>
+          </div>
+          <div class="mood-stats" id="moodStats"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== EDITOR MODAL ==================== -->
+  <div class="modal-overlay" id="editorOverlay">
+    <div class="editor-modal">
+      <div class="editor-header">
+        <div class="editor-header-left">
+          <span id="editorDateDisplay"></span>
+        </div>
+        <button class="editor-close" onclick="closeEditor()" aria-label="Fechar editor">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="editor-body">
+        <div class="editor-mood-select">
+          <label>Como você está se sentindo?</label>
+          <div class="mood-options" id="moodOptions">
+            <button class="mood-option" data-mood="5" onclick="selectMood(this)" title="Ótimo" aria-label="Humor ótimo">&#x1F929;</button>
+            <button class="mood-option" data-mood="4" onclick="selectMood(this)" title="Bom" aria-label="Humor bom">&#x1F60A;</button>
+            <button class="mood-option" data-mood="3" onclick="selectMood(this)" title="Normal" aria-label="Humor normal">&#x1F610;</button>
+            <button class="mood-option" data-mood="2" onclick="selectMood(this)" title="Ruim" aria-label="Humor ruim">&#x1F614;</button>
+            <button class="mood-option" data-mood="1" onclick="selectMood(this)" title="Péssimo" aria-label="Humor péssimo">&#x1F622;</button>
+          </div>
+        </div>
+        <input type="text" class="editor-title-input" id="editorTitle" placeholder="Título da nota...">
+        <textarea class="editor-content-input" id="editorContent" placeholder="Escreva sobre o seu dia..."></textarea>
+        <div class="emoji-picker-row">
+          <label>Adicionar emojis</label>
+          <div class="emoji-grid" id="emojiGrid"></div>
+        </div>
+      </div>
+      <div class="editor-footer">
+        <div class="editor-footer-left">
+          <button class="editor-footer-btn" id="editorPinBtn" onclick="toggleEditorPin()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V5a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2z"/></svg>
+            Fixar
+          </button>
+          <button class="editor-footer-btn" id="editorFavBtn" onclick="toggleEditorFav()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Favoritar
+          </button>
+          <button class="btn-delete" id="editorDeleteBtn" onclick="confirmDeleteNote()" style="display: none;">Excluir</button>
+        </div>
+        <button class="btn-save" onclick="saveNote()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CONFIRM DELETE ==================== -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-card">
+      <h4>Excluir nota?</h4>
+      <p>Essa ação não pode ser desfeita. A nota será removida permanentemente.</p>
+      <div class="confirm-actions">
+        <button class="confirm-cancel" onclick="closeConfirm()">Cancelar</button>
+        <button class="confirm-delete" onclick="deleteNote()">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST ==================== -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
