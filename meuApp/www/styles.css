@@ -1308,3 +1308,26 @@
       transform: translateY(0);
       opacity: 1;
     }
+
+   /* SPLASH */ 
+   .splash {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+     background: #f5f0e6;
+   }
+
+   .splash-container {
+     text-align: center;
+   }
+
+   .splash-container h1 {
+     color: #E8735A;
+     font-size: 28px;
+   }
+
+   .splash-container p {
+     color: #666;
+     margin-top: 10px;
+   }
