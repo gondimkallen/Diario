@@ -18,6 +18,46 @@
 </head>
 <body>
 
+<!-- ==================== LOCK SCREEN ==================== -->
+  <div class="lock-screen" id="lockScreen">
+    <div class="lock-card">
+      <div class="lock-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E8735A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <h1>Meu Diário</h1>
+      <p>Digite sua senha para entrar</p>
+      <div class="lock-error" id="lockError"></div>
+      <div class="pin-input-container" id="pinDisplay">
+        <div class="pin-dot" id="dot0"></div>
+        <div class="pin-dot" id="dot1"></div>
+        <div class="pin-dot" id="dot2"></div>
+        <div class="pin-dot" id="dot3"></div>
+      </div>
+      <div class="numpad">
+        <button class="numpad-btn" onclick="enterPin('1')">1</button>
+        <button class="numpad-btn" onclick="enterPin('2')">2</button>
+        <button class="numpad-btn" onclick="enterPin('3')">3</button>
+        <button class="numpad-btn" onclick="enterPin('4')">4</button>
+        <button class="numpad-btn" onclick="enterPin('5')">5</button>
+        <button class="numpad-btn" onclick="enterPin('6')">6</button>
+        <button class="numpad-btn" onclick="enterPin('7')">7</button>
+        <button class="numpad-btn" onclick="enterPin('8')">8</button>
+        <button class="numpad-btn" onclick="enterPin('9')">9</button>
+        <button class="numpad-btn action" onclick="clearPin()">Limpar</button>
+        <button class="numpad-btn" onclick="enterPin('0')">0</button>
+        <button class="numpad-btn action" onclick="deleteLastPin()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+        </button>
+      </div>
+      <div class="setup-password">
+        <button id="changePwBtn" onclick="openPasswordSetup()">Alterar senha</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== PASSWORD SETUP ==================== -->
   <div class="pw-setup-overlay" id="pwSetupOverlay">
     <div class="pw-setup-card">
