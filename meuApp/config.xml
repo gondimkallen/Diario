@@ -10,12 +10,23 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+  
+     <!-- Splash Config -->
+    <preference name="AutoHideSplashScreen" value="true"/>
+    <preference name="SplashScreenDelay" value="2000"/>
+    <preference name="FadeSplashScreenDuration" value="300"/>
+    <preference name="ShowSplashScreenSpinner" value="false"/>
+
     <platform name="android">
-        <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
-        <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
-        <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
-        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
-        <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
-        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
+        <!-- Ícones -->
+        <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png"/>
+        <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png"/>
+        <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png"/>
+        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png"/>
+        <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png"/>
+        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png"/>
+
+        <!-- Splash -->
+        <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png"/>
     </platform>
 </widget>

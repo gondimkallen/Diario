@@ -15,9 +15,13 @@
   "cordova": {
     "platforms": [
       "android"
-    ]
+    ],
+    "plugins": {
+      "cordova-plugin-splashscreen": {}
+    }
   },
   "devDependencies": {
-    "cordova-android": "^15.0.0"
+    "cordova-android": "^15.0.0",
+    "cordova-plugin-splashscreen": "^6.0.1"
   }
 }
