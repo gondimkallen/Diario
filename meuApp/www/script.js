@@ -21,20 +21,35 @@ let deleteTargetId = null;
 
 // ==================== INIT ====================
 function init() {
-  if (!localStorage.getItem('diary_password')) {
+  localStorage.clear();
+  const savedPw = localStorage.getItem('diary_password');
+
+  if (!savedPw) {
     openPasswordSetup();
+  } else {
+    clearPin();
   }
+
   renderEmojiGrid();
 }
 
 // ==================== PASSWORD / LOCK ====================
 function enterPin(digit) {
   if (currentPin.length >= 4) return;
+
   currentPin += digit;
   updatePinDisplay();
 
   if (currentPin.length === 4) {
     const savedPw = localStorage.getItem('diary_password');
+
+    // 🔥 se por algum motivo não existir senha
+    if (!savedPw) {
+      showPinError();
+      return;
+    }
+
+    // 🔥 valida corretamente
     if (currentPin === savedPw) {
       unlock();
     } else {
@@ -72,7 +87,17 @@ function showPinError() {
 }
 
 function unlock() {
-  window.location.href = "home.html";
+  // 🔥 limpa o PIN (ESSENCIAL pra não dar loop)
+  currentPin = '';
+
+  document.getElementById('lockScreen').classList.add('hidden');
+  document.getElementById('appContainer').classList.add('visible');
+
+  renderNotes();
+
+  setTimeout(() => {
+    document.getElementById('lockScreen').style.display = 'none';
+  }, 500);
 }
 
 function openPasswordSetup() {
@@ -92,15 +117,23 @@ function saveNewPassword() {
     errorEl.textContent = 'O PIN deve conter exatamente 4 números.';
     return;
   }
+
   if (newPw !== confirmPw) {
     errorEl.textContent = 'Os PINs não coincidem.';
     return;
   }
 
+  // 🔥 salva senha
   localStorage.setItem('diary_password', newPw);
+
+  // 🔥 fecha tela de criação
   document.getElementById('pwSetupOverlay').classList.remove('visible');
-  showToast('Senha salva com sucesso!');
+
+  // 🔥 limpa o PIN digitado
   clearPin();
+
+  // 🔥 mensagem
+  showToast('Senha criada! Agora faça login.');
 }
 
 // ==================== NAVIGATION ====================
