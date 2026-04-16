@@ -21,7 +21,6 @@ let deleteTargetId = null;
 
 // ==================== INIT ====================
 function init() {
-  localStorage.clear();
   const savedPw = localStorage.getItem('diary_password');
 
   if (!savedPw) {
